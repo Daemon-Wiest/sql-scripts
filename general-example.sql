@@ -7,5 +7,5 @@ select  c.ID, c.Name, c.City, c.State, c.Sales, c.Active, o.Id, o.Date, o.Descri
 		on oL.OrdersId = o.Id
 where c.Sales > 50000
 order by c.Sales desc
-
+-- outer join ("left join") causes null values in the primary/foreign key columns to show in the join
 ;
