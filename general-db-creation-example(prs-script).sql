@@ -5,14 +5,15 @@ drop table users;
 use prs;
 create table users (
 id int not null primary key auto_increment,
-username varchar(30) not null unique,  -- adding "unique" to your column script makes sure sql only assigns to unique values to this column
+username varchar(30) not null unique,  -- adding "unique" to your column script makes sure sql only assigns to unique values to this column...  this can also be done after all tables are typed out. you can use (CONSTRAINT [alias] unique ([table name])) which has the benefit of assigning a name to the constraint
 password varchar(30)  not null,
 firstname varchar(30) not null,
 lastname varchar (30) not null,
-phone varchar(12),
+phonenumber varchar(12),
 email varchar(255),
 isreviewer tinyint not null default 0,  -- tinyint signifies a boolean "yes/no" type, with the default being 0 or "no"
 isadmin tinyint not null default 0
+-- constraint uname unique (username) example of the comment on line 8
 )
 ;
 create table vendors (
@@ -50,6 +51,7 @@ unit varchar(30) not null,
 photopath varchar(255), -- gives a path to a corresponding photo file
 vendorid int not null,
 		foreign key(vendorid) references vendors(id)
+-- constraint vendor_part unique (vendorid, partnumber) 
 )
 ;
 create table lineitems( -- we dont want to put the same product twice on the same request, so we use the unique constraint making the combination of requestid and productid required to be unique
@@ -73,7 +75,7 @@ values ('AMAZ', 'Amazon', '1 Amazon Way', 'Seattle', 'WA', '84744'),
         ('MEIJ', 'Meijer', '1 Meijer Way', 'Atlanta', 'MI', '98764')
 ;
 insert
-into request (description, justification, dateneeded, userid)
+into requests (description, justification, dateneeded, userid)
 values ('1st request', 'just because', '2021-03-01',
 		(select id from users where username='sa'))
 ;
@@ -84,5 +86,5 @@ values ('01', 'Sega Dreamcast', 199.00, 200,
 ;
 insert
 into lineitems (requestid, productid, quantity)
-values ((select id from request where id=1), (select id from products where partnumber='01'), 3)
+values ((select id from requests where id=1), (select id from products where partnumber='01'), 3)
 ;
